@@ -116,10 +116,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1702071006629944724, guid: 2c126a3d0ef54e34eb19b07a04939ee6,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1702071006629944724, guid: 2c126a3d0ef54e34eb19b07a04939ee6,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 2823046883493189348, guid: 2c126a3d0ef54e34eb19b07a04939ee6,
         type: 3}
       propertyPath: m_Name
-      value: top
+      value: bottom
       objectReference: {fileID: 0}
     - target: {fileID: 5094107096586335667, guid: 2c126a3d0ef54e34eb19b07a04939ee6,
         type: 3}
@@ -200,12 +210,12 @@ PrefabInstance:
     - target: {fileID: 8211021651140187612, guid: 2c126a3d0ef54e34eb19b07a04939ee6,
         type: 3}
       propertyPath: gatePointType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9170940084278227086, guid: 2c126a3d0ef54e34eb19b07a04939ee6,
         type: 3}
       propertyPath: m_Name
-      value: L Turn
+      value: Bottom Right L Turn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c126a3d0ef54e34eb19b07a04939ee6, type: 3}
