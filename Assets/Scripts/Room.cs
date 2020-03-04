@@ -15,4 +15,9 @@ public class Room : MonoBehaviour
     {
         transform.name = ("" + transform.position.x + ";" + transform.position.y);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Destroy(gameObject);
+    }
 }

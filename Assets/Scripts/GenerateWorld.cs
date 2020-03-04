@@ -1,10 +1,8 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System;
 
-public enum  SpawnDirection
+public enum SpawnDirection
 {
     up,
     down,
@@ -14,22 +12,34 @@ public enum  SpawnDirection
 
 public class GenerateWorld : MonoBehaviour
 {
-    [SerializeField] int gridSize = 10;
-    [SerializeField] int roomsToSpawn;
     [SerializeField] Room[] rooms;
 
+    [SerializeField] Room[] topRooms;
+    [SerializeField] Room[] bottomRooms;
+    [SerializeField] Room[] leftRooms;
+    [SerializeField] Room[] rightRooms;
+
+    [Header("Other variables")]
+    [SerializeField] int gridSize = 8;
+    [SerializeField] int roomsToSpawn = 0;
+    Vector2 newSpawnPosition = new Vector3(0, 0, 0);
+
+    List<Vector2> takenDirectionsList = new List<Vector2>();
     string[] directions;
     List<string> directionList = new List<string>();
 
-    Vector2 newSpawnPosition = new Vector3(0,0,0);
+
     void Start()
     {
+        #region enums
+        //Turns the enum into a list of strings
         directions = Enum.GetNames(typeof(SpawnDirection));
         foreach(string direction in directions)
         {
             directionList.Add(direction);
         }
-
+        #endregion
+        //Loop to generate every room
         for(int i = 0; i < roomsToSpawn; i++)
         {
             int roomToSpawnNumber;
@@ -38,10 +48,21 @@ public class GenerateWorld : MonoBehaviour
         }
     }
 
-    private void SpawnRoom(int roomToSpawnNumber)
-    {
-        Room newRoom = Instantiate(rooms[roomToSpawnNumber], newSpawnPosition, Quaternion.identity);
 
+    private void SpawnRoom(int roomSpawnNumber)
+    {
+        Room newRoom = Instantiate(rooms[roomSpawnNumber], transform.position, Quaternion.identity);
+
+        Vector2 newRoomPosition;
+        newRoomPosition = GenerateCoordinates();
+
+        newRoom.transform.position = newRoomPosition; //set the room position
+        newSpawnPosition = newRoomPosition; //assign the new spawn position value
+        takenDirectionsList.Add(newSpawnPosition); //Adds the position of the room into a list of Vector2
+    }
+
+    private Vector2 GenerateCoordinates()
+    {
         int newDirectionPicker = UnityEngine.Random.Range(0, directionList.Count);
         string newDirection = directionList[newDirectionPicker];
 
@@ -64,20 +85,55 @@ public class GenerateWorld : MonoBehaviour
                 break;
         }
 
-        newSpawnPosition = new Vector2(newX, newY);
-        SetRoomPosition(newRoom);
-    }
-
-    private void SetRoomPosition(Room newRoom)
-    {
-        Vector2 roomSnapPos;
-        roomSnapPos.x = Mathf.RoundToInt(newRoom.transform.position.x / gridSize) * gridSize;
-        roomSnapPos.y = Mathf.RoundToInt(newRoom.transform.position.y / gridSize) * gridSize;
-        newRoom.transform.position = new Vector2(roomSnapPos.x, roomSnapPos.y);
-    }
-
-    public void RestartScene()
-    {
-        SceneManager.LoadScene(0);
+        Vector2 generatedSpawnPosition = new Vector2(newX, newY);
+        return generatedSpawnPosition;
     }
 }
+
+/*[Header("Room Templates")]
+    [SerializeField] Room[] topRooms;
+    [SerializeField] Room[] bottomRooms;
+    [SerializeField] Room[] leftRooms;
+    [SerializeField] Room[] rightRooms;
+
+    int openingDirection;
+    int rand;
+    bool spawned = false;
+
+    void Start()
+    {
+        Invoke("SpawnRooms", 0.1f);
+    }
+
+    private void Update()
+    {
+        
+    }
+
+    void SpawnRooms()
+    {
+        if(!spawned)
+        {
+            switch(openingDirection)
+            {
+                case 1:
+                    rand = UnityEngine.Random.Range(0, topRooms.Length);
+                    Instantiate(topRooms[rand], transform.position, Quaternion.identity);
+                    break;
+                case 2:
+                    rand = UnityEngine.Random.Range(0, bottomRooms.Length);
+                    Instantiate(bottomRooms[rand], transform.position, Quaternion.identity);
+                    break;
+                case 3:
+                    rand = UnityEngine.Random.Range(0, leftRooms.Length);
+                    Instantiate(leftRooms[rand], transform.position, Quaternion.identity);
+                    break;
+                case 4:
+                    rand = UnityEngine.Random.Range(0, rightRooms.Length);
+                    Instantiate(rightRooms[rand], transform.position, Quaternion.identity);
+                    break;
+            }
+        }
+        spawned = true;
+    }
+}*/
