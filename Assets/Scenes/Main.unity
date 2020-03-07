@@ -325,33 +325,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be36045a5cd0a42469c2c79864e4051d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topRooms:
+  rooms:
   - {fileID: 672156449861107795, guid: cc4bc838279c79f4493b8fbf81561f74, type: 3}
   - {fileID: 1723743089863281376, guid: b4bc13ecf67a0294e9e14dd2b2bed951, type: 3}
-  - {fileID: 3083701286939221218, guid: d7aa8a2e0d3ac38449628896978a720e, type: 3}
-  - {fileID: 3083701286939221218, guid: 9cc7a54a854c6ca46a895aaf9f83f9f0, type: 3}
-  - {fileID: 4786790501111498069, guid: 9909fb51bfac29849ae4b22d17eccda0, type: 3}
-  bottomRooms:
-  - {fileID: 1723743089863281376, guid: 876de2e502a1f5c4ba3e571e69260717, type: 3}
-  - {fileID: 3083701286939221218, guid: 06041a752bf98a347af81ef66c5e96d0, type: 3}
-  - {fileID: 3083701286939221218, guid: 0ac7986f585faa2479f939f3277a783f, type: 3}
-  - {fileID: 4786790501111498069, guid: 9909fb51bfac29849ae4b22d17eccda0, type: 3}
-  - {fileID: 672156449861107795, guid: cc4bc838279c79f4493b8fbf81561f74, type: 3}
-  leftRooms:
-  - {fileID: 672156449861107795, guid: cc4bc838279c79f4493b8fbf81561f74, type: 3}
-  - {fileID: 1723743089863281376, guid: 04f83de8d2139db4098fa6ea5f814ce9, type: 3}
-  - {fileID: 3083701286939221218, guid: 0ac7986f585faa2479f939f3277a783f, type: 3}
-  - {fileID: 4786790501111498069, guid: 39a4c18224f19e34383968a13c737dbf, type: 3}
-  - {fileID: 3083701286939221218, guid: d7aa8a2e0d3ac38449628896978a720e, type: 3}
-  rightRooms:
-  - {fileID: 672156449861107795, guid: cc4bc838279c79f4493b8fbf81561f74, type: 3}
   - {fileID: 1723743089863281376, guid: e6536eeb3f16fd54a8756a58b1894230, type: 3}
-  - {fileID: 3083701286939221218, guid: 06041a752bf98a347af81ef66c5e96d0, type: 3}
+  - {fileID: 1723743089863281376, guid: 04f83de8d2139db4098fa6ea5f814ce9, type: 3}
+  - {fileID: 1723743089863281376, guid: 876de2e502a1f5c4ba3e571e69260717, type: 3}
   - {fileID: 3083701286939221218, guid: 9cc7a54a854c6ca46a895aaf9f83f9f0, type: 3}
+  - {fileID: 3083701286939221218, guid: d7aa8a2e0d3ac38449628896978a720e, type: 3}
+  - {fileID: 3083701286939221218, guid: 06041a752bf98a347af81ef66c5e96d0, type: 3}
+  - {fileID: 3083701286939221218, guid: 0ac7986f585faa2479f939f3277a783f, type: 3}
   - {fileID: 4786790501111498069, guid: 39a4c18224f19e34383968a13c737dbf, type: 3}
-  minGridSize: 5
-  maxGridSize: 10
+  - {fileID: 4786790501111498069, guid: 9909fb51bfac29849ae4b22d17eccda0, type: 3}
+  gridSize: 8
+  worldSize: {x: 20, y: 20}
   roomsToSpawn: 5
+  spawnedRooms: []
+  canSpawnBridges: 0
   roomsDestroyed: 0
 --- !u!4 &2136131270
 Transform:
