@@ -44,19 +44,8 @@ public class GenerateWorld : MonoBehaviour
 
     #endregion
 
-    /*void Start()
-    {
-        //Loop to generate every room
-        for(int i = 0; i < roomsToSpawn; i++)
-        {
-            SpawnRoom();
-            //Invoke("SpawnRoom", 1f);
-        }
-    }*/
-
     private void Update()
     {
-        //Loop to generate every room
         if(!hasSpawnedRooms)
         for(int i = 0; i < roomsToSpawn; i++)
         {
@@ -64,33 +53,28 @@ public class GenerateWorld : MonoBehaviour
         }
         hasSpawnedRooms = true;
 
-        if(hasSpawnedRooms && !hasSpawnedDestroyedRooms)
+        if(hasSpawnedRooms && !hasSpawnedDestroyedRooms && spawnedRooms.Count < roomsToSpawn)
         {
-            if(spawnedRooms.Count < roomsToSpawn)
+            int additionalRooms = roomsToSpawn - spawnedRooms.Count;
+            for(int j = 0; j < additionalRooms; j++)
             {
-                int additionalRooms = roomsToSpawn - spawnedRooms.Count;
-                for(int j = 0; j < additionalRooms; j++)
-                {
-                    SpawnRoom();
-                }
+                SpawnRoom();
             }
-            hasSpawnedRooms = true;
         }
-    }
 
-    private void LateUpdate()
-    {
-        /*if(hasSpawnedRooms && !hasSpawnedDestroyedRooms)
+        else if(spawnedRooms.Count < roomsToSpawn)
         {
-            if(spawnedRooms.Count < roomsToSpawn)
+            hasSpawnedDestroyedRooms = true;
+            canSpawnBridges = true;
+        }
+
+        if(canSpawnBridges)
+        {
+            for(int i = 0; i < spawnedRooms.Count - 1; i++)
             {
-                int additionalRooms = roomsToSpawn - spawnedRooms.Count;
-                for(int j = 0; j < additionalRooms; j++)
-                {
-                    SpawnRoom();
-                }
+                spawnedRooms[i].SetClosestRoom(spawnedRooms[i + 1]);
             }
-        }*/
+        }
     }
 
     public void SpawnRoom()

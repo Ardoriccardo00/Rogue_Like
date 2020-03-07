@@ -13,33 +13,9 @@ public class Room : MonoBehaviour
         gatePoint = GetComponentsInChildren<GatePoint>();
     }
 
-    void Update()
+    void LateUpdate()
     {
         transform.name = ("" + transform.position.x + ";" + transform.position.y);
-
-        /*if(GenerateWorld.instance.canSpawnBridges && !hasConnectedRoom)
-        {
-            FindClosestRoom();
-        }*/
-    }
-
-    public void FindClosestRoom()
-    {
-        float distanceToClosestRoom = Mathf.Infinity;
-        Room[] allRooms = GameObject.FindObjectsOfType<Room>();
-
-        foreach(Room currentRoom in allRooms)
-        {
-            float distanceToRoom = (currentRoom.transform.position - this.transform.position).sqrMagnitude;
-            if(distanceToRoom < distanceToClosestRoom)
-            {
-                distanceToClosestRoom = distanceToRoom;
-                closestRoom = currentRoom;
-            }
-        }
-
-        Debug.DrawLine(this.transform.position, closestRoom.transform.position);
-        hasConnectedRoom = true;
     }
 
     public void SetClosestRoom(Room room)

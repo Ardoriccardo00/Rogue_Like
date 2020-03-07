@@ -17,7 +17,7 @@ public class GatePoint : MonoBehaviour
     [SerializeField] GatePoint closestGate = null;
     bool hasConnectedBridge = false;
 
-    void Update()
+    void LateUpdate()
     {
         transform.name = Convert.ToString(gatePointType);
 
@@ -30,7 +30,7 @@ public class GatePoint : MonoBehaviour
 	void FindClosestGate()
     {
         float distanceToClosestGate = Mathf.Infinity;
-        GatePoint[] allGates = GameObject.FindObjectsOfType<GatePoint>();
+        GatePoint[] allGates = FindObjectsOfType<GatePoint>();
 
         foreach(GatePoint currentGate in allGates)
         {
