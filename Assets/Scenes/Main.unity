@@ -198,7 +198,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209694363}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -30}
+  m_LocalPosition: {x: 0, y: 1, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -349,8 +349,10 @@ MonoBehaviour:
   - {fileID: 3083701286939221218, guid: 06041a752bf98a347af81ef66c5e96d0, type: 3}
   - {fileID: 3083701286939221218, guid: 9cc7a54a854c6ca46a895aaf9f83f9f0, type: 3}
   - {fileID: 4786790501111498069, guid: 39a4c18224f19e34383968a13c737dbf, type: 3}
-  gridSize: 8
-  roomsToSpawn: 20
+  minGridSize: 5
+  maxGridSize: 10
+  roomsToSpawn: 5
+  roomsDestroyed: 0
 --- !u!4 &2136131270
 Transform:
   m_ObjectHideFlags: 0

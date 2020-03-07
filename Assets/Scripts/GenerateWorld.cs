@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,20 +13,51 @@ public enum SpawnDirection
 
 public class GenerateWorld : MonoBehaviour
 {
+    public static GenerateWorld instance;
+
     [SerializeField] Room[] topRooms;
     [SerializeField] Room[] bottomRooms;
     [SerializeField] Room[] leftRooms;
     [SerializeField] Room[] rightRooms;
 
     [Header("Other variables")]
-    [SerializeField] int gridSize = 8;
+    [SerializeField] int minGridSize = 8;
+    [SerializeField] int maxGridSize = 10;
     [SerializeField] int roomsToSpawn = 0;
-    Vector2 newSpawnPosition = new Vector3(0, 0, 0);
 
-    List<Vector2> takenDirectionsList = new List<Vector2>();
+    public List<Room> spawnedRooms = new List<Room>();
+
+    Vector2 newSpawnPosition = new Vector3(0, 0, 0);
     string[] directions;
     List<string> directionList = new List<string>();
 
+    bool hasSpawnedDestroyedRooms = false;
+    public bool canSpawnBridges = false;
+
+    Queue<Room> roomsToSpawnQueue = new Queue<Room>();
+
+    #region Singleton
+    public int roomsDestroyed = 0;
+
+    private void Awake()
+    {
+        if(instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void IncreaseRoomsDestroyedNumber()
+    {
+        roomsDestroyed++;
+        print("Rooms destroyed: " + roomsDestroyed);
+    }
+
+    #endregion
 
     void Start()
     {
@@ -37,85 +69,92 @@ public class GenerateWorld : MonoBehaviour
             directionList.Add(direction);
         }
         #endregion
+
         //Loop to generate every room
         for(int i = 0; i < roomsToSpawn; i++)
         {
-            Invoke("SpawnRoom", 0.1f);
+            SpawnRoom();
         }
     }
 
+    private void LateUpdate()
+    {
+        if(!hasSpawnedDestroyedRooms)
+        {
+            Room[] generatedRooms = FindObjectsOfType<Room>();
+            if(generatedRooms.Length < roomsToSpawn)
+            {
+                int additionalRooms = roomsToSpawn - generatedRooms.Length;
+                for(int j = 0; j < additionalRooms; j++)
+                {
+                    SpawnRoom();
+                }
+                //canSpawnBridges = true;
+            }
+                hasSpawnedDestroyedRooms = true;
+        }
+            //spawnedRooms.RemoveAt(spawnedRooms.Count - 1);
 
-    private void SpawnRoom()
+        /*if(hasSpawnedDestroyedRooms && canSpawnBridges)
+        {
+            for(int i = 0; i < spawnedRooms.Count; i++)
+            {
+                spawnedRooms[i].SetClosestRoom(spawnedRooms[i + 1]);
+            }
+            //spawnedRooms[spawnedRooms.Count].SetClosestRoom(spawnedRooms[0]);
+            canSpawnBridges = false;
+        }*/
+    }
+
+    public void SpawnRoom()
     {
         int randRoom;
+        float newRandPos = UnityEngine.Random.Range(minGridSize, maxGridSize);
+
         int newDirectionPicker = UnityEngine.Random.Range(0, directionList.Count);
         string newDirection = directionList[newDirectionPicker];
+
 
         switch(newDirection)
         {
             case "up":
-                float up = newSpawnPosition.y + gridSize;
+                float up = newSpawnPosition.y + newRandPos;
+                newSpawnPosition = new Vector2(newSpawnPosition.x, up);
                 randRoom = UnityEngine.Random.Range(0, topRooms.Length);
-                var newRoomUp = Instantiate(topRooms[randRoom], new Vector2(transform.position.x, up), Quaternion.identity);
-                newSpawnPosition = new Vector2(transform.position.x, up);
+                SnapRoomPosition(Instantiate(rightRooms[randRoom], newSpawnPosition, Quaternion.identity));
                 break;
+
             case "down":
-                float down = newSpawnPosition.y - gridSize;
-                randRoom = UnityEngine.Random.Range(0, bottomRooms.Length);
-                var newRoomDown = Instantiate(bottomRooms[randRoom], new Vector2(transform.position.x, down), Quaternion.identity);
+                float down = newSpawnPosition.y - newRandPos;
                 newSpawnPosition = new Vector2(transform.position.x, down);
+                randRoom = UnityEngine.Random.Range(0, bottomRooms.Length);
+                SnapRoomPosition(Instantiate(rightRooms[randRoom], newSpawnPosition, Quaternion.identity));
                 break;
+
             case "left":
-                float left = newSpawnPosition.x - gridSize;
-                randRoom = UnityEngine.Random.Range(0, leftRooms.Length);
-                var newRoomLeft = Instantiate(leftRooms[randRoom], new Vector2(left, transform.position.y), Quaternion.identity);
+                float left = newSpawnPosition.x - newRandPos;
                 newSpawnPosition = new Vector2(left, transform.position.y);
+                randRoom = UnityEngine.Random.Range(0, leftRooms.Length);
+                SnapRoomPosition(Instantiate(rightRooms[randRoom], newSpawnPosition, Quaternion.identity));
                 break;
+
             case "right":
-                float right = newSpawnPosition.x + gridSize;
-                randRoom = UnityEngine.Random.Range(0, rightRooms.Length);
-                var newRoomRight = Instantiate(rightRooms[randRoom], new Vector2(right, transform.position.y), Quaternion.identity);
+                float right = newSpawnPosition.x + newRandPos;
                 newSpawnPosition = new Vector2(right, transform.position.y);
+                randRoom = UnityEngine.Random.Range(0, rightRooms.Length);
+                SnapRoomPosition(Instantiate(rightRooms[randRoom], newSpawnPosition, Quaternion.identity));
                 break;
         }
-
-        //Room newRoom = Instantiate(rooms[roomSpawnNumber], transform.position, Quaternion.identity);
-
-
-        /*Vector2 newRoomPosition;
-        newRoomPosition = GenerateCoordinates();
-
-        newRoom.transform.position = newRoomPosition; //set the room position
-        newSpawnPosition = newRoomPosition; //assign the new spawn position value
-        takenDirectionsList.Add(newSpawnPosition); //Adds the position of the room into a list of Vector2*/
     }
 
-    private Vector2 GenerateCoordinates()
+    private void SnapRoomPosition(Room newRoom)
     {
-        int newDirectionPicker = UnityEngine.Random.Range(0, directionList.Count);
-        string newDirection = directionList[newDirectionPicker];
+        Vector2 roomSnapPos;
+        roomSnapPos.x = Mathf.RoundToInt(newRoom.transform.position.x / minGridSize) * minGridSize;
+        roomSnapPos.y = Mathf.RoundToInt(newRoom.transform.position.y / minGridSize) * minGridSize;
+        newRoom.transform.position = new Vector2(roomSnapPos.x, roomSnapPos.y);
 
-        float newX = newSpawnPosition.x;
-        float newY = newSpawnPosition.y;
-
-        switch(newDirection)
-        {
-            case "up":
-                newY += gridSize;
-                break;
-            case "down":
-                newY -= gridSize;
-                break;
-            case "left":
-                newX -= gridSize;
-                break;
-            case "right":
-                newX += gridSize;
-                break;
-        }
-
-        Vector2 generatedSpawnPosition = new Vector2(newX, newY);
-        return generatedSpawnPosition;
+        spawnedRooms.Add(newRoom);
     }
 }
 
