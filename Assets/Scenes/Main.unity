@@ -306,6 +306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2136131270}
   - component: {fileID: 2136131269}
+  - component: {fileID: 2136131271}
   m_Layer: 0
   m_Name: World Generator
   m_TagString: Untagged
@@ -338,10 +339,10 @@ MonoBehaviour:
   - {fileID: 4786790501111498069, guid: 39a4c18224f19e34383968a13c737dbf, type: 3}
   - {fileID: 4786790501111498069, guid: 9909fb51bfac29849ae4b22d17eccda0, type: 3}
   gridSize: 8
-  worldSize: {x: 20, y: 20}
-  roomsToSpawn: 5
+  worldSize: {x: 50, y: 50}
   spawnedRooms: []
   canSpawnBridges: 0
+  corridorsToGenerate: 2
   roomsDestroyed: 0
 --- !u!4 &2136131270
 Transform:
@@ -357,3 +358,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2136131271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136131268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbd09af2607371d488d5006154884545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minSquares: 5
+  maxSquares: 15
+  squaresToGenerate: 0
+  squarePrefab: {fileID: 8269004553604021933, guid: 3aac785c27a470b4f871ac3a738ecb02,
+    type: 3}
+  corridorParent: {fileID: 7973997650543164456, guid: b75c3a124e8db64428d374d8f953842b,
+    type: 3}
+  squareList: []
+  firstSquare: {fileID: 0}
+  lastSquare: {fileID: 0}

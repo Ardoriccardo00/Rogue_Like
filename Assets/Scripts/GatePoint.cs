@@ -14,35 +14,33 @@ public enum GatePointType
 public class GatePoint : MonoBehaviour
 {
     public GatePointType gatePointType = GatePointType.none;
-    [SerializeField] GatePoint closestGate = null;
-    bool hasConnectedBridge = false;
 
-    void LateUpdate()
+    GatePoint nearestGate = null;
+    Room myRoom;
+
+    void Start()
     {
+        myRoom = GetComponentInParent<Room>();
         transform.name = Convert.ToString(gatePointType);
-
-        /*if(GenerateWorld.instance.canSpawnBridges && !hasConnectedBridge)
-        {
-            FindClosestGate();
-        }*/
     }
 
-	void FindClosestGate()
+    /*public void FindClosestGate()
     {
-        float distanceToClosestGate = Mathf.Infinity;
-        GatePoint[] allGates = FindObjectsOfType<GatePoint>();
-
-        foreach(GatePoint currentGate in allGates)
+        foreach(GatePoint gate in myRoom.gatePoints)
         {
-            float distanceToGate = (currentGate.transform.position - this.transform.position).sqrMagnitude;
-            if(distanceToGate < distanceToClosestGate)
-            {
-                distanceToClosestGate = distanceToGate;
-                closestGate = currentGate;
-            }
-        }
+            float nearestDistance = float.MaxValue;
+            nearestGate = null;
 
-        Debug.DrawLine(this.transform.position, closestGate.transform.position);
-        hasConnectedBridge = true;
-    }
+            foreach(GatePoint closeGate in myRoom.nearestGatePoints)
+            {
+                if(Vector2.Distance(transform.position, gate.transform.position) < nearestDistance)
+                {
+                    nearestDistance = Vector2.Distance(transform.position, gate.transform.position);
+                    nearestGate = gate;
+                }
+                Debug.DrawLine(transform.position, nearestGate.transform.position, Color.green);
+            }
+            
+        }
+    }*/
 }
